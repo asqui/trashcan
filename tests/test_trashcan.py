@@ -42,7 +42,7 @@ def assert_eventually_false(c: Callable, timeout: float = 1, poll: float = 0.01)
     assert success
 
 
-def test_assert_eventually():
+def test_assert_eventually_false():
     with ShouldRaise(AssertionError):
         assert_eventually_false(lambda: True, timeout=0.001, poll=0.001)
 
