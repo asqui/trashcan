@@ -9,6 +9,11 @@ from testfixtures import ShouldRaise, LogCapture
 from trashcan import Trashcan
 
 
+@pytest.fixture(autouse=True)
+def ensure_no_stderr_output(capfd):
+    yield
+    assert not capfd.readouterr().err
+
 @pytest.fixture
 def log():
     with LogCapture() as log_:
@@ -69,7 +74,7 @@ class Checks:
         path = tmpdir / 'not.there'
         trashcan(path)
         trashcan.shutdown()
-        log.check(('trashcan', 'ERROR', f'Exception deleting {path}'))
+        log.check_present(('trashcan', 'ERROR', f'Exception deleting {path}'))
 
 
 class TestSimple(Checks):
