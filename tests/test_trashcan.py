@@ -12,7 +12,9 @@ from trashcan import Trashcan
 @pytest.fixture(autouse=True)
 def ensure_no_stderr_output(capfd):
     yield
-    assert not capfd.readouterr().err
+    stderr = capfd.readouterr().err
+    if stderr:
+        pytest.fail('Unexpected stderr:\n{}'.format(stderr))
 
 @pytest.fixture
 def log():
