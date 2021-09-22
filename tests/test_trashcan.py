@@ -9,6 +9,14 @@ from testfixtures import ShouldRaise, LogCapture
 from trashcan import Trashcan
 
 
+@pytest.fixture(autouse=True)
+def ensure_no_stderr_output(capfd):
+    yield
+    stderr = capfd.readouterr().err
+    if stderr:
+        pytest.fail('Unexpected stderr:\n{}'.format(stderr))
+
+
 @pytest.fixture
 def log():
     with LogCapture() as log_:
