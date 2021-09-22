@@ -51,7 +51,7 @@ def maketree(path: py.path.local, files: int, dirs: int, depth: int):
             maketree(path / f'dir{i}', files, dirs, depth-1)
 
 
-def test_assert_eventually():
+def test_assert_eventually_false():
     with ShouldRaise(AssertionError):
         assert_eventually_false(lambda: True, timeout=0.001, poll=0.001)
 

@@ -8,7 +8,7 @@ from typing import Union, Callable, Optional
 logger = getLogger(__name__)
 
 
-# Holders for the thread pool used when its nested inside a process pool
+# Holders for the thread pool used when it's nested inside a process pool
 _threads: Optional[int] = None
 _threadpool: Optional[ThreadPoolExecutor] = None
 
