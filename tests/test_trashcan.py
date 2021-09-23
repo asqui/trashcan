@@ -100,32 +100,37 @@ class TestSimple(Checks):
 
     @pytest.fixture
     def trashcan(self):
-        return Trashcan()
+        with Trashcan() as trashcan:
+            yield trashcan
 
 
 class TestThreads(Checks):
 
     @pytest.fixture
     def trashcan(self):
-        return Trashcan(threads=1)
+        with Trashcan(threads=1) as trashcan:
+            yield trashcan
 
 
 class TestProcesses(Checks):
 
     @pytest.fixture
     def trashcan(self):
-        return Trashcan(processes=1)
+        with Trashcan(processes=1) as trashcan:
+            yield trashcan
 
 
 class TestProcessesAndThreads(Checks):
 
     @pytest.fixture
     def trashcan(self):
-        return Trashcan(processes=1, threads=1)
+        with Trashcan(processes=1, threads=1) as trashcan:
+            yield trashcan
 
 
 class TestMany(Checks):
 
     @pytest.fixture
     def trashcan(self):
-        return Trashcan(processes=4, threads=16)
+        with Trashcan(processes=4, threads=16) as trashcan:
+            yield trashcan

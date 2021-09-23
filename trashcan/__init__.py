@@ -56,6 +56,12 @@ class Trashcan:
         else:
             self.submit = _run
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.shutdown()
+
     def shutdown(self):
         if self.executor is not None:
             self.executor.shutdown()
