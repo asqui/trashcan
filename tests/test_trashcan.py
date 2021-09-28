@@ -89,7 +89,6 @@ class Checks:
         path = tmpdir / 'root'
         maketree(path, files=5, dirs=3, depth=4)
         trashcan.delete(str(path))
-        sleep(1)  # TODO: Implement more graceful shutdown and remove this
         trashcan.shutdown()
         assert not path.exists()
 

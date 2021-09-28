@@ -4,7 +4,7 @@ from concurrent.futures import ThreadPoolExecutor, Future, wait
 from functools import partial
 from logging import getLogger
 from pathlib import Path
-from typing import Union
+from typing import Union, List
 
 _log = getLogger(__name__)
 
@@ -21,6 +21,7 @@ def _log_walk_exception(ex: OSError):
 
 class Trashcan:
     _thread_pool = None
+    _tasks_starting: List[Future] = []
 
     def __init__(self, threads: int = None, processes: int = None):
         if processes and threads:
@@ -44,7 +45,9 @@ class Trashcan:
     def delete(self, path: Union[Path, str]):
         if not isinstance(path, Path):
             path = Path(path)
-        self._delete(path)
+        future = self._delete(path)
+        if future:
+            self._tasks_starting.append(future)
 
     def __enter__(self):
         return self
@@ -53,6 +56,7 @@ class Trashcan:
         self.shutdown()
 
     def shutdown(self):
+        wait(self._tasks_starting)
         if self._thread_pool is not None:
             self._thread_pool.shutdown()
 
